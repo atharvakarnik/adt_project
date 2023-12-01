@@ -1,8 +1,11 @@
 import streamlit as st
 import requests
 
+# Base URL for backend API
+BACKEND_API = 'http://localhost:5000'
+
 def login_user(username, password):
-    response = requests.post('http://localhost:5000/login', json={"username": username, "password": password})
+    response = requests.post(f'{BACKEND_API}/login', json={"username": username, "password": password})
     if response.status_code == 200:
         return response.json()
     return None
@@ -20,7 +23,30 @@ def show_manager_dashboard():
 
 def add_employee_page():
     st.write("Add Employee")
-    # Add your form and logic here for adding an employee
+    with st.form("add_employee_form", clear_on_submit=True):
+        emp_name = st.text_input("Employee Name")
+        dept_name = st.text_input("Department Name")
+        location_name = st.text_input("Location Name")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        is_manager = st.checkbox("Is Manager?")
+        submit_button = st.form_submit_button("Submit")
+
+        if submit_button:
+            response = requests.post(f'{BACKEND_API}/add_employee', json={
+                "emp_name": emp_name,
+                "dept_name": dept_name,
+                "location_name": location_name,
+                "username": username,
+                "password": password,
+                "is_manager": is_manager
+            })
+
+            if response.status_code == 201:
+                st.success("Employee added successfully.")
+                st.session_state['current_page'] = 'manager_dashboard'
+            else:
+                st.error("Failed to add employee. Please try again.")
 
 # Initialize session state
 if 'current_page' not in st.session_state:
