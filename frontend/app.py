@@ -23,13 +23,13 @@ def show_manager_dashboard():
 
 def add_employee_page():
     st.write("Add Employee")
-    with st.form("add_employee_form", clear_on_submit=True):
-        emp_name = st.text_input("Employee Name")
-        dept_name = st.text_input("Department Name")
-        location_name = st.text_input("Location Name")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        is_manager = st.checkbox("Is Manager?")
+    with st.form("add_employee_form"):
+        emp_name = st.text_input("Employee Name", key='emp_name')
+        dept_name = st.text_input("Department Name", key='dept_name')
+        location_name = st.text_input("Location Name", key='location_name')
+        username = st.text_input("Username", key='username')
+        password = st.text_input("Password", type="password", key='password')
+        is_manager = st.checkbox("Is Manager?", key='is_manager')
         submit_button = st.form_submit_button("Submit")
 
         if submit_button:
